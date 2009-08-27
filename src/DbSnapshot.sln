@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSnapshot", "DbSnapshot\DbSnapshot.csproj", "{CE57B6BC-1B9F-4730-87B2-584E3E45337B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSnapshot.Test", "DbSnapshot.Test\DbSnapshot.Test.csproj", "{F595F22E-F8BF-4F9A-A64B-A67AFADCF401}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE57B6BC-1B9F-4730-87B2-584E3E45337B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE57B6BC-1B9F-4730-87B2-584E3E45337B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE57B6BC-1B9F-4730-87B2-584E3E45337B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE57B6BC-1B9F-4730-87B2-584E3E45337B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F595F22E-F8BF-4F9A-A64B-A67AFADCF401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F595F22E-F8BF-4F9A-A64B-A67AFADCF401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F595F22E-F8BF-4F9A-A64B-A67AFADCF401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F595F22E-F8BF-4F9A-A64B-A67AFADCF401}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
