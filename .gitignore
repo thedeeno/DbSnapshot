@@ -1,0 +1,7 @@
+output
+temp
+src/*/bin
+src/*/obj
+*.user
+*.suo
+*.sln.cache
