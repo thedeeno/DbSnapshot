@@ -1,7 +1,7 @@
 class NUnitRunner	
 	def initialize(attributes)
 		@tool = attributes[:tool]
-		@xml_results_file = attributes.fetch(:xml_results_file, nil)
+		@results_file = attributes.fetch(:results_file, nil)
 		@include_categories = attributes.fetch(:include_categories, nil)
 		@exclude_categories = attributes.fetch(:exclude_categories, nil)
 		@show_logo = attributes.fetch(:show_logo, false)
@@ -11,7 +11,7 @@ class NUnitRunner
 		puts "Executing #{@tool} on #{assemblies_to_test.length} assemblies:\r\n#{assemblies_to_test.join("\r\n")}"
 		
 		cmd = @tool
-		cmd << ' /xml:' + @xml_results_file unless @xml_results_file.nil?
+		cmd << ' /xml:' + @results_file unless @results_file.nil?
 		cmd << ' /nologo' unless @show_logo
 		cmd << ' /include:' + @include_categories.join(',') unless @include_categories.nil? or @include_categories.length == 0
 		cmd << ' /exclude:' + @exclude_categories.join(',') unless @exclude_categories.nil? or @exclude_categories.length == 0
