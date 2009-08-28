@@ -70,7 +70,7 @@ end
 
 
 desc "Runs tests with NUnit."
-task :test => [:compile] do
+task :test => [:compile, :detach_test_database] do
 	puts "Running Tests..."
 	
 	assemblies_to_test = FileList["#{WORK_DIR}/**/#{COMPILE_MODE}/*.Test.dll"].exclude(/obj\//)
@@ -82,6 +82,14 @@ task :test => [:compile] do
 	runner.test(assemblies_to_test)
 	
 	puts "Tests Successful".green
+end
+
+desc "Detaches the test database from the user instance for SQLExpress"
+task :detach_test_database do
+	puts "Attempting to detach test database from sql express user instance (just incase)..."
+	sql_express_utility = "tools/SSEUtil/sseutil.exe" 
+	test_database_name = "DbSnapshotTest"
+	sh "#{sql_express_utility} -d name=#{test_database_name}"
 end
 
 desc "Update AssemblyInfo.cs(s) with current project info."
