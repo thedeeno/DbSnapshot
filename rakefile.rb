@@ -70,7 +70,7 @@ end
 
 
 desc "Runs tests with NUnit."
-task :test => [:compile, :detach_test_database] do
+task :test => [:detach_test_database] do
 	assemblies_to_test = FileList["#{WORK_DIR}/**/#{COMPILE_MODE}/*.Test.dll"].exclude(/obj\//)
 	
 	puts "Running tests found in #{assemblies_to_test.length} assemblies:\r\n#{assemblies_to_test.join("\r\n")}"
