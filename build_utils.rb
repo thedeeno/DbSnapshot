@@ -99,6 +99,8 @@ class SqlCmdRunner
 	end
 end
 
+
+# Colorize console output
 begin
   require 'Win32/Console/ANSI' if PLATFORM =~ /win32/
 rescue LoadError
