@@ -116,7 +116,7 @@ task :update_assembly_info do
 		unless injectables_in_file.empty? 
 			injectables_in_file.each { |k, v| text.gsub!(k, v) }
 			File.open(path, 'w') { |f| f.puts text }
-			injectables_in_file.each { |k, v| puts "replaced #{k} with #{v} in file @ #{path}"}
+			injectables_in_file.each { |k, v| puts "Replaced '#{k}' with '#{v}'"}
 		end
 		
 	end
