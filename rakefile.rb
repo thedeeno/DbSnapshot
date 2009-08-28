@@ -71,9 +71,9 @@ end
 
 desc "Runs tests with NUnit."
 task :test => [:compile, :detach_test_database] do
-	puts "Running Tests..."
-	
 	assemblies_to_test = FileList["#{WORK_DIR}/**/#{COMPILE_MODE}/*.Test.dll"].exclude(/obj\//)
+	
+	puts "Running tests found in #{assemblies_to_test.length} assemblies:\r\n#{assemblies_to_test.join("\r\n")}"
 	
 	runner = NUnitRunner.new :tool => NUNIT_EXE, 
 		:exclude_categories => ['Performance'], 

@@ -7,9 +7,7 @@ class NUnitRunner
 		@show_logo = attributes.fetch(:show_logo, false)
 	end
 	
-	def test(assemblies_to_test)
-		puts "Executing #{@tool} on #{assemblies_to_test.length} assemblies:\r\n#{assemblies_to_test.join("\r\n")}"
-		
+	def test(assemblies_to_test)		
 		cmd = @tool
 		cmd << ' /xml:' + @results_file unless @results_file.nil?
 		cmd << ' /nologo' unless @show_logo
