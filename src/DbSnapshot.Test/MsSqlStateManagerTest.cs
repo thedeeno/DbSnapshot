@@ -12,21 +12,81 @@ namespace DbSnapshot.Test
 		// constants
 		const string TEST_DATABASE_NAME = "DbSnapshotTest";
 		const string CONNECTION_STRING = @"Server=.\SQLExpress;
-AttachDbFilename=|DataDirectory|DbSnapshotTest.mdf;
-Initial Catalog=DbSnapshotTest;
+Initial Catalog=master;
 Integrated Security=SSPI;
 User Instance=true;";
+
+		// properties
+		public string MdfPath
+		{
+			get
+			{
+				return Path.Combine(Directory.GetCurrentDirectory(), TEST_DATABASE_NAME + ".mdf");
+			}
+		}
+		public string LdfPath
+		{
+			get
+			{
+				return Path.Combine(Directory.GetCurrentDirectory(), TEST_DATABASE_NAME + "_log.ldf");
+			}
+		}
+
+		// fixture setup/teardown
+		[TestFixtureSetUp]
+		public void FixtureSetUp()
+		{
+			AttachTestDatabaseToUserInstance();
+		}
+
+		[TestFixtureTearDown]
+		public void FixtureTearDown()
+		{
+			DetachTestDatabaseFromUserInstance();
+		}
+
+		// fixture setup/teardown | helpers
+		private void AttachTestDatabaseToUserInstance()
+		{
+			var template = @"EXEC sp_attach_db @dbname = N'<name>', 
+   @filename1 = N'<mdf_path>',
+   @filename2 = N'<ldf_path>';";
+
+			var sql = template;
+			sql = sql.Replace("<name>", TEST_DATABASE_NAME);
+			sql = sql.Replace("<mdf_path>", MdfPath);
+			sql = sql.Replace("<ldf_path>", LdfPath);
+
+			using (var conn = new SqlConnection(CONNECTION_STRING))
+            {
+				conn.Open();
+				ExecuteNonQuery(conn, sql);
+            }
+		}
+		private void DetachTestDatabaseFromUserInstance()
+		{
+			var template = @"EXEC sp_detach_db N'<name>';";
+
+			var sql = template;
+			sql = sql.Replace("<name>", TEST_DATABASE_NAME);
+
+			using (var conn = new SqlConnection(CONNECTION_STRING))
+			{
+				conn.Open();
+				ExecuteNonQuery(conn, sql);
+			}
+		}
 
 		// save
 		[Test]
 		public void SaveSnapshot_Creates_Database_Backup_In_Work_Directory()
 		{
 			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
-            {
+			{
 				Assert.IsFalse(File.Exists(manager.BackupFilePath));
 				manager.SaveSnapshot();
 				Assert.That(File.Exists(manager.BackupFilePath));
-            }	
+			}
 		}
 
 		[Test]
