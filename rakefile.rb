@@ -67,26 +67,18 @@ end
 
 
 desc "Runs tests with NUnit."
-task :test => [:detach_test_database, :output] do
+task :test => [:output] do
 	assemblies_to_test = FileList["#{SOURCE_DIR}/**/#{COMPILE_MODE}/*.Test.dll"].exclude(/obj\//)
 	
 	puts "Running tests found in #{assemblies_to_test.length} assemblies:\r\n#{assemblies_to_test.join("\r\n")}"
 	
 	runner = NUnitRunner.new :tool => NUNIT_EXE, 
 		:exclude_categories => ['Performance'], 
-		:results_file => File.join(OUTPUT_DIR, "nunit.xml")
+		:results_file => File.join(OUTPUT_DIR, "test-results.xml")
 		
 	runner.test(assemblies_to_test)
 	
 	puts "Tests Successful".green
-end
-
-desc "Detaches the test database from the user instance for SQLExpress"
-task :detach_test_database do
-	puts "Attempting to detach test database from sql express user instance (just incase)..."
-	sql_express_utility = "tools/SSEUtil/sseutil.exe" 
-	test_database_name = "DbSnapshotTest"
-	sh "#{sql_express_utility} -d name=#{test_database_name}"
 end
 
 desc "Overwrites existing assembly info, injecting the proper context values"
@@ -126,7 +118,7 @@ end
 
 Rake::PackageTask.new(PROJECT_NAME, VERSION) do |p|
 	p.need_zip = true
-	p.package_files.include("output/*")
+	p.package_files.include("output/bin/*")
 	p.package_dir = PACKAGE_DIR
 end
 
