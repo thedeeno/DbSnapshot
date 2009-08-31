@@ -152,7 +152,6 @@ User Instance=true;";
 					conn.Open();
 					conn.ChangeDatabase(TEST_DATABASE_NAME);
 					Assert.AreEqual(4, CountCommand.ExecuteScalar());
-					conn.Close(); // reduntant yes, but a connection is being left open somewhere
 				}
 			}
 		}
@@ -190,7 +189,6 @@ User Instance=true;";
 					conn.Open();
 					conn.ChangeDatabase(TEST_DATABASE_NAME);
 					Assert.AreNotEqual(DBNull.Value, ExistsCommand.ExecuteScalar());
-					conn.Close(); // reduntant yes, but a connection is being left open somewhere
 				}
 			}
 		}
@@ -206,6 +204,42 @@ User Instance=true;";
 			}
 		}
 
+
+		// dispose
+		[Test]
+		public void Disposing_Should_Restore_The_Database_If_Snapshot_Exists()
+		{
+			var CountCommand = new SqlCommand("SELECT Count(name) FROM People");
+			var DestructiveCommand = new SqlCommand("DELETE FROM People");
+
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			{
+				using (var conn = new SqlConnection(CONNECTION_STRING))
+				{
+					conn.Open();
+					conn.ChangeDatabase(TEST_DATABASE_NAME);
+					SetupDatabase(conn);
+
+					CountCommand.Connection = conn;
+					DestructiveCommand.Connection = conn;
+
+					manager.SaveSnapshot();
+					Assert.AreEqual(4, CountCommand.ExecuteScalar());
+
+					DestructiveCommand.ExecuteNonQuery();
+					Assert.AreEqual(0, CountCommand.ExecuteScalar());
+				}
+			}
+
+			using (var conn = new SqlConnection(CONNECTION_STRING))
+			{
+				conn.Open();
+				conn.ChangeDatabase(TEST_DATABASE_NAME);
+				CountCommand.Connection = conn;
+				Assert.AreEqual(4, CountCommand.ExecuteScalar(), "database should have been restored");
+			}
+
+		}
 
 		// performance
 		[Test]

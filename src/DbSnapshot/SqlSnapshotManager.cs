@@ -110,9 +110,10 @@ namespace DbSnapshot
 			}
 		}
 
-
 		public void Dispose()
 		{
+			if (SnapshotExists())
+				RestoreSnapshot();
 			DeleteSnapshot();
 		}
 
