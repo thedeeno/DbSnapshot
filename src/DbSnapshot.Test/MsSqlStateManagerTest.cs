@@ -81,7 +81,7 @@ User Instance=true;";
 		[Test]
 		public void SaveSnapshot_Creates_Database_Backup_In_Work_Directory()
 		{
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				Assert.IsFalse(File.Exists(manager.BackupFilePath));
 				manager.SaveSnapshot();
@@ -92,7 +92,7 @@ User Instance=true;";
 		[Test]
 		public void SaveSnapshot_Throws_When_Snapshot_Already_Exists_And_Overwite_Equals_False()
 		{
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				manager.SaveSnapshot();
 
@@ -106,7 +106,7 @@ User Instance=true;";
 		public void DeleteSnapshot_Removes_Backup_File_From_Work_Directory()
 		{
 			// arrange
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				manager.SaveSnapshot();
 
@@ -123,7 +123,7 @@ User Instance=true;";
 		public void RestoreSnapshot_Reverts_Database_DML_Operations()
 		{
 			// arrange
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				var CountCommand = new SqlCommand("SELECT Count(name) FROM People");
 				var DestructiveCommand = new SqlCommand("DELETE FROM People");
@@ -161,7 +161,7 @@ User Instance=true;";
 		public void RestoreSnapshot_Reverts_Database_DDL_Operations()
 		{
 			// arrange
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				var ExistsCommand = new SqlCommand("SELECT OBJECT_ID(N'dbo.People')");
 				var DestructiveCommand = new SqlCommand("DROP TABLE People");
@@ -198,7 +198,7 @@ User Instance=true;";
 		[Test]
 		public void RestoreSnapshot_Throws_When_No_Snapshots_Exist()
 		{
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				manager.DeleteSnapshot();
 
@@ -212,7 +212,7 @@ User Instance=true;";
 		[Category("Performance")]
 		public void Performance_Of_Cycle()
 		{
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				var timer = new Stopwatch();
 				timer.Start();
@@ -228,7 +228,7 @@ User Instance=true;";
 		[Category("Performance")]
 		public void Performance_Of_Average_Restore()
 		{
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				var timer = new Stopwatch();
 				manager.SaveSnapshot();
@@ -253,7 +253,7 @@ User Instance=true;";
 		public void Disposing_Manager_Removes_Work_Directory()
 		{
 			string work;
-			using (var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME))
+			using (var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME))
 			{
 				manager.SaveSnapshot(); // create file and work directory
 				work = manager.WorkDirectory;
@@ -267,17 +267,17 @@ User Instance=true;";
 		// tests | manual
 		public void Manually_Restore_Snapshot()
 		{
-			var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME);
+			var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME);
 			manager.RestoreSnapshot();
 		}
 		public void Manually_Save_Snapshot()
 		{
-			var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME);
+			var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME);
 			manager.SaveSnapshot();
 		}
 		public void Manually_Delete_Snapshot()
 		{
-			var manager = new MsSqlStateManager(CONNECTION_STRING, TEST_DATABASE_NAME);
+			var manager = new SqlSnapshotManager(CONNECTION_STRING, TEST_DATABASE_NAME);
 			manager.DeleteSnapshot();
 		}
 

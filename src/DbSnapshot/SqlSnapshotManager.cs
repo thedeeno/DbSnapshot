@@ -4,7 +4,7 @@ using System.IO;
 
 namespace DbSnapshot
 {
-    public class MsSqlStateManager : IDbSnapshotManager
+    public class SqlSnapshotManager : IDbSnapshotManager
 	{
 		// constants
 		const string BACKUP_CMD_TEMPLATE = "BACKUP DATABASE {0} TO DISK = '{1}' WITH COPY_ONLY";
@@ -42,7 +42,7 @@ namespace DbSnapshot
 		}
 
 		// ctors
-		public MsSqlStateManager(string connectionString, string databaseName)
+		public SqlSnapshotManager(string connectionString, string databaseName)
 		{
 			_connectionString = connectionString;
 			_databaseName = databaseName;

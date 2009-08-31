@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\ExistingSnapshotException.cs" />
     <Compile Include="IDbSnapshotManager.cs" />
-    <Compile Include="MsSqlStateManager.cs" />
+    <Compile Include="SqlSnapshotManager.cs" />
     <Compile Include="Exceptions\NoSnapshotException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensions.cs" />
