@@ -113,7 +113,10 @@ end
 
 desc "Publishes the main library's compiled binaries to #{BIN_DIR}"
 task :publish => [:test, :output] do
+	puts 'Publishing...'
 	FileUtils.cp_r(File.join(SOURCE_DIR, '/DbSnapshot/bin/Release/'), BIN_DIR)
+	FileUtils.cp('License.txt', BIN_DIR)
+	puts 'Publish Successful'.green
 end
 
 Rake::PackageTask.new(PROJECT_NAME, VERSION) do |p|
