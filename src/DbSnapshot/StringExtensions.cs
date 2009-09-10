@@ -11,5 +11,10 @@ namespace DbSnapshot
 		{
 			return string.Format(self, args);
 		}
+
+		public static string CleanForSqlServer(this string self)
+		{
+			return self.Replace("'", "''");
+		}
 	}
 }

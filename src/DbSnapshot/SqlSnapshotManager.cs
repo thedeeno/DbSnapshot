@@ -33,6 +33,13 @@ namespace DbSnapshot
 				return Path.Combine(_workDirectory, _backupFileName);
 			}
 		}
+		public string BackupFilePathSql
+		{
+			get
+			{
+				return BackupFilePath.CleanForSqlServer();
+			}
+		}
 		public string WorkDirectory
 		{
 			get
@@ -70,7 +77,7 @@ namespace DbSnapshot
 				Directory.CreateDirectory(_workDirectory);
 			}
 
-			var sql = BACKUP_CMD_TEMPLATE.Fill(_databaseName, BackupFilePath);
+			var sql = BACKUP_CMD_TEMPLATE.Fill(_databaseName, BackupFilePathSql);
 			ExecuteSqlCommand(sql);
 		}
 		public void RestoreSnapshot()
@@ -78,7 +85,7 @@ namespace DbSnapshot
 			if (!SnapshotExists())
 				throw new NoSnapshotException();
 
-			var sql = RESTORE_CMD_TEMPLATE.Fill(_databaseName, BackupFilePath);
+			var sql = RESTORE_CMD_TEMPLATE.Fill(_databaseName, BackupFilePathSql);
 			ExecuteSqlCommand(sql);
 		}
 		public void DeleteSnapshot()
@@ -116,6 +123,5 @@ namespace DbSnapshot
 				RestoreSnapshot();
 			DeleteSnapshot();
 		}
-
 	}
 }
