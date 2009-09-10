@@ -51,6 +51,9 @@ namespace DbSnapshot
 		// ctors
 		public SqlSnapshotManager(string connectionString, string databaseName)
 		{
+			if (!PoolingDisabled(connectionString))
+				throw new ArgumentException("Connection Pooling must be disabled inorder to safley use SqlSnapshotManager. Please add 'Pooling=false' to the connection string to disable it");
+
 			_connectionString = connectionString;
 			_databaseName = databaseName;
 			_backupFileName = databaseName + ".bak";
@@ -115,6 +118,10 @@ namespace DbSnapshot
 
 				cmd.ExecuteNonQuery();
 			}
+		}
+		private bool PoolingDisabled(string connectionString)
+		{
+			return connectionString.ToLower().Contains("pooling=false");
 		}
 
 		public void Dispose()

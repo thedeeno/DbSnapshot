@@ -11,10 +11,7 @@ namespace DbSnapshot.Test
 	{
 		// constants
 		const string TEST_DATABASE_NAME = "DbSnapshotTest";
-		const string CONNECTION_STRING = @"Server=.\SQLExpress;
-Initial Catalog=master;
-Integrated Security=SSPI;
-User Instance=true;";
+		const string CONNECTION_STRING = @"Server=.\SQLExpress;Initial Catalog=master;Integrated Security=SSPI;User Instance=true;Pooling=False;";
 
 		// properties
 		public string MdfPath
@@ -204,6 +201,12 @@ User Instance=true;";
 			}
 		}
 
+		[Test]
+		public void Throw_When_Connection_String_Arg_Does_Not_Disable_Pooling()
+		{
+			var badConnectionString = @"Server=.\SQLExpress;Initial Catalog=master;Integrated Security=SSPI;User Instance=true;";
+			Assert.Throws<ArgumentException>(delegate { var x = new SqlSnapshotManager(badConnectionString, TEST_DATABASE_NAME); });
+		}
 
 		// dispose
 		[Test]
