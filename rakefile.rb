@@ -6,7 +6,7 @@ require 'build_utils.rb'
 PROJECT_NAME = "DbSnapshot"
 PRODUCT_NAME = "DbSnapshot"
 MAJOR_VERSION = "0"
-MINOR_VERSION = "2"
+MINOR_VERSION = "3"
 BUILD_NUMBER = "0"
 REVISION_NUMBER = "0"
 COPYRIGHT = "Copyright © 2009 Dane O'Connor. All rights reserved."
