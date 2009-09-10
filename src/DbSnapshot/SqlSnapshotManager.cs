@@ -8,10 +8,10 @@ namespace DbSnapshot
 	{
 		// constants
 		const string BACKUP_CMD_TEMPLATE = @"BACKUP DATABASE ""{0}"" TO DISK = '{1}' WITH COPY_ONLY";
-		const string RESTORE_CMD_TEMPLATE = @"RESTORE DATABASE ""{0}"" FROM DISK = '{1}'";
+		const string RESTORE_CMD_TEMPLATE = @"ALTER DATABASE ""{0}"" SET SINGLE_USER With ROLLBACK IMMEDIATE;RESTORE DATABASE ""{0}"" FROM DISK = '{1}';";
 		const string WORK_DIRECTORY_NAME = ".dbsnapshot";
 
-		// Consider using the below command to ensure an exclusive lock when restoring the db.
+		// The below command to ensures an exclusive lock when restoring the db.
 		// It will kill all the current connections, rollback any transactions, and ensure no other user can attain a
 		// lock during restore. The restore should put the db back to the state it was in before this opertation
 		// (typically MULTI-USER).
