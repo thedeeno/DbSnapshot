@@ -7,8 +7,8 @@ namespace DbSnapshot
     public class SqlSnapshotManager : IDbSnapshotManager
 	{
 		// constants
-		const string BACKUP_CMD_TEMPLATE = "BACKUP DATABASE {0} TO DISK = '{1}' WITH COPY_ONLY";
-		const string RESTORE_CMD_TEMPLATE = "RESTORE DATABASE {0} FROM DISK = '{1}'";
+		const string BACKUP_CMD_TEMPLATE = @"BACKUP DATABASE ""{0}"" TO DISK = '{1}' WITH COPY_ONLY";
+		const string RESTORE_CMD_TEMPLATE = @"RESTORE DATABASE ""{0}"" FROM DISK = '{1}'";
 		const string WORK_DIRECTORY_NAME = ".dbsnapshot";
 
 		// Consider using the below command to ensure an exclusive lock when restoring the db.
